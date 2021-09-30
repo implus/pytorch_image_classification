@@ -192,6 +192,8 @@ config.augmentation.use_mixup = False
 config.augmentation.use_ricap = False
 config.augmentation.use_cutmix = False
 config.augmentation.use_label_smoothing = False
+config.augmentation.use_label_history = False
+config.augmentation.use_label_dynamic_history = False
 
 config.augmentation.random_crop = ConfigNode()
 config.augmentation.random_crop.padding = 4
@@ -225,6 +227,12 @@ config.augmentation.cutmix.alpha = 1.0
 
 config.augmentation.label_smoothing = ConfigNode()
 config.augmentation.label_smoothing.epsilon = 0.1
+
+config.label = ConfigNode()
+config.label.momentum_label = 0.9
+config.label.momentum_label_final = 0.1
+config.label.momentum_history = 0.9
+config.label.momentum_history_final = 0.1
 
 config.tta = ConfigNode()
 config.tta.use_resize = False

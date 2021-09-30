@@ -8,6 +8,8 @@ from .mixup import MixupLoss
 from .ricap import RICAPLoss
 from .dual_cutout import DualCutoutLoss
 from .label_smoothing import LabelSmoothingLoss
+from .label_history import LabelHistoryLoss
+from .label_dynamic_history import LabelDynamicHistoryLoss
 
 
 def create_loss(config: yacs.config.CfgNode) -> Tuple[Callable, Callable]:
@@ -21,6 +23,10 @@ def create_loss(config: yacs.config.CfgNode) -> Tuple[Callable, Callable]:
         train_loss = LabelSmoothingLoss(config, reduction='mean')
     elif config.augmentation.use_dual_cutout:
         train_loss = DualCutoutLoss(config, reduction='mean')
+    elif config.augmentation.use_label_history:
+        train_loss = LabelHistoryLoss(config, reduction='mean')
+    elif config.augmentation.use_label_dynamic_history:
+        train_loss = LabelDynamicHistoryLoss(config, reduction='mean')
     else:
         train_loss = nn.CrossEntropyLoss(reduction='mean')
     val_loss = nn.CrossEntropyLoss(reduction='mean')

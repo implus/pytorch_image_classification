@@ -1,0 +1,92 @@
+python -m torch.distributed.launch --nproc_per_node 8     train.py --config configs/cifar/wrn.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/exp00     augmentation.use_ricap False     augmentation.use_random_crop True   acc@1 0.9591 acc@5 0.9983
+
+python -m torch.distributed.launch --nproc_per_node 8     train.py --config configs/cifar/wrn.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/exp01     augmentation.use_cutout True     augmentation.use_random_crop True   acc@1 0.9683 acc@5 0.9989
+
+python -m torch.distributed.launch --nproc_per_node 8     train.py --config configs/cifar/wrn.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/exp02     augmentation.use_cutmix True     augmentation.use_random_crop True  acc@1 0.9669 acc@5 0.9982 
+
+python -m torch.distributed.launch --nproc_per_node 8     train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/tmp     augmentation.use_cutout True     augmentation.use_random_crop True
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29502 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/label_exp01 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True 
+acc@1 0.9574 acc@5 0.9988
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29503 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/label_exp02 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True label.momentum_label 0.8 label.momentum_history 0.8
+acc@1 0.9581 acc@5 0.9984
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29504 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/label_exp03 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True label.momentum_label 0.6 label.momentum_history 0.6
+acc@1 0.9597 acc@5 0.9985
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29505 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus/label_exp04 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True label.momentum_label 0.5 label.momentum_history 0.5
+acc@1 0.9582 acc@5 0.9986
+
+######################### CIFAR100 ############################
+python -m torch.distributed.launch --nproc_per_node 8     train.py --config configs/cifar/wrn.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/exp00_ls  augmentation.use_label_smoothing True augmentation.use_random_crop True   dataset.name CIFAR100 acc@1 0.7886 acc@5 0.9381
+
+python -m torch.distributed.launch --nproc_per_node 8     train.py --config configs/cifar/wrn.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/exp00     augmentation.use_ricap False     augmentation.use_random_crop True   dataset.name CIFAR100 
+acc@1 0.7921 acc@5 0.9458
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29502 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp01 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100
+acc@1 0.7892 acc@5 0.9464
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29503 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp02 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.8 label.momentum_history 0.8
+acc@1 0.7969 acc@5 0.9472
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29504 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp03 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.6 label.momentum_history 0.6
+acc@1 0.7939 acc@5 0.9455
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29505 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp04 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.5
+acc@1 0.7976 acc@5 0.9457
+
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29506 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp05 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.95
+acc@1 0.7978 acc@5 0.9471
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29507 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp06 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.9
+acc@1 0.7913 acc@5 0.9465
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29508 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp07 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.8
+acc@1 0.8001 acc@5 0.9480
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29509 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp08 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.7
+acc@1 0.7973 acc@5 0.9478
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29510 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_exp09 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_history 0.6
+acc@1 0.7927 acc@5 0.9466
+
+#############CIFAR10, dynamic history##############
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29500 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar10/label_dyexp00 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR10 label.momentum_label 0.99 label.momentum_label_final 0.01 label.momentum_history 0.99 label.momentum_history_final 0.01
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29502 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar10/label_dyexp02 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR10 label.momentum_label 1. label.momentum_label_final 0. label.momentum_history 1. label.momentum_history_final 0.
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29503 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar10/label_dyexp03 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR10 label.momentum_label 0.9 label.momentum_label_final 0.1 label.momentum_history 0.9 label.momentum_history_final 0.1
+
+#############CIFAR100, dynamic history##############
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29511 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp00 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.1 label.momentum_history 0.9 label.momentum_history_final 0.1
+acc@1 0.8017 acc@5 0.9529
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29501 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp01 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.99 label.momentum_label_final 0.1 label.momentum_history 0.99 label.momentum_history_final 0.1
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29502 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp0101 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.01 label.momentum_history 0.9 label.momentum_history_final 0.01
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29502 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp02 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.99 label.momentum_label_final 0.01 label.momentum_history 0.99 label.momentum_history_final 0.01
+acc@1 0.8044 acc@5 0.9555
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29503 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp03 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.5 label.momentum_history 0.9 label.momentum_history_final 0.1
+acc@1 0.7943 acc@5 0.9494
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29504 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp04 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.1 label.momentum_history 0.9 label.momentum_history_final 0.5
+acc@1 0.8019 acc@5 0.9525
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29505 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp05 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.5 label.momentum_history 0.9 label.momentum_history_final 0.5
+acc@1 0.7896 acc@5 0.9482
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29506 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp06 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.99 label.momentum_label_final 0.01 label.momentum_history 0.9 label.momentum_history_final 0.9
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29507 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp07 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.99 label.momentum_label_final 0.01 label.momentum_history 0.5 label.momentum_history_final 0.5
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29508 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp08 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.9 label.momentum_label_final 0.9 label.momentum_history 0.99 label.momentum_history_final 0.01
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29509 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp09 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.5 label.momentum_label_final 0.5 label.momentum_history 0.99 label.momentum_history_final 0.01
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29510 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp10 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 0.999 label.momentum_label_final 0.001 label.momentum_history 0.999 label.momentum_history_final 0.001
+
+python -m torch.distributed.launch --nproc_per_node 8 --master_port 29501 train_label.py --config configs/cifar/wrn_label.yaml     train.distributed True     train.base_lr 0.2     train.batch_size 64     scheduler.epochs 200     scheduler.type cosine     train.output_dir experiments/wrn_28_10_8gpus_cifar100/label_dyexp101 augmentation.use_cutout False augmentation.use_random_crop True augmentation.use_label_dynamic_history True dataset.name CIFAR100 label.momentum_label 1. label.momentum_label_final 0. label.momentum_history 1. label.momentum_history_final 0.

@@ -15,6 +15,7 @@ import torch.distributed as dist
 import torchvision
 
 from fvcore.common.checkpoint import Checkpointer
+from collections import defaultdict
 
 from pytorch_image_classification import (
     apply_data_parallel_wrapper,
@@ -120,7 +121,8 @@ def send_targets_to_device(config, targets, device):
 
 
 def train(epoch, config, model, optimizer, scheduler, loss_func, train_loader,
-          logger, tensorboard_writer, tensorboard_writer2):
+          logger, tensorboard_writer, tensorboard_writer2, 
+          label_dict, momentum_label):
     global global_step
 
     logger.info(f'Train {epoch} {global_step}')
@@ -154,6 +156,7 @@ def train(epoch, config, model, optimizer, scheduler, loss_func, train_loader,
         optimizer.zero_grad()
         outputs = []
         losses = []
+        idx = 0
         for data_chunk, target_chunk in zip(data_chunks, target_chunks):
             if config.augmentation.use_dual_cutout:
                 w = data_chunk.size(3) // 2
@@ -167,13 +170,16 @@ def train(epoch, config, model, optimizer, scheduler, loss_func, train_loader,
                 output_chunk = model(data_chunk)
             outputs.append(output_chunk)
 
-            loss = loss_func(output_chunk, target_chunk)
+            # assert label_history loss_func
+            loss = loss_func(output_chunk, target_chunk, label_dict, step, idx, epoch)
             losses.append(loss)
             if config.device != 'cpu' and config.train.use_apex:
                 with apex.amp.scale_loss(loss, optimizer) as scaled_loss:
                     scaled_loss.backward()
             else:
                 loss.backward()
+            idx += 1
+
         outputs = torch.cat(outputs)
 
         if config.train.gradient_clip > 0:
@@ -437,12 +443,20 @@ def main():
         validate(0, config, model, val_loss, val_loader, logger,
                  tensorboard_writer)
 
+    # label EMA
+    label_dict = defaultdict(dict) # for multiple data chunks
+    momentum_label = config.label.momentum_label
+
     for epoch, seed in enumerate(epoch_seeds[start_epoch:], start_epoch):
         epoch += 1
 
+        # update label_dict momentum_label
+        # TODO
+
         np.random.seed(seed)
         train(epoch, config, model, optimizer, scheduler, train_loss,
-              train_loader, logger, tensorboard_writer, tensorboard_writer2)
+              train_loader, logger, tensorboard_writer, tensorboard_writer2, 
+              label_dict, momentum_label)
 
         if config.train.val_period > 0 and (epoch % config.train.val_period
                                             == 0):
